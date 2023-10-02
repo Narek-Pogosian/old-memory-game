@@ -54,22 +54,22 @@ body {
   background-color: #514da4;
 }
 
-.restart {
+.restart-screen {
   display: none;
 }
 
-.restart.show {
+.restart-screen.show {
   display: block;
   text-align: center;
 }
 
-.restart p:first-of-type {
+.restart-screen p:first-of-type {
   font-size: 2.5rem;
   color: white;
   margin-bottom: 1rem;
 }
 
-.restart p:last-of-type {
+.restart-screen p:last-of-type {
   font-size: 2rem;
   color: white;
   margin-bottom: 2rem;

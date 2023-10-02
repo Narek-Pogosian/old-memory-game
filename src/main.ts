@@ -1,17 +1,15 @@
 import "./style.css";
-import { cardsArray } from "./data";
+import { Card, cardsArray } from "./cards";
 import { shuffleArray } from "./utils";
 
-interface Card {
-  id: number;
-  value: string;
-}
-
-const grid = document.querySelector("#grid");
+const grid: HTMLDivElement = document.querySelector("#grid")!;
 const startButton: HTMLButtonElement = document.querySelector("#start")!;
-const restart = document.querySelector(".restart");
+const restartScreen: HTMLDivElement =
+  document.querySelector(".restart-screen")!;
 
-startButton?.addEventListener("click", startGame);
+startButton.addEventListener("click", startGame);
+
+document.querySelector("#restart")?.addEventListener("click", startGame);
 
 // Game states
 let hasFlippedCard = false;
@@ -29,25 +27,26 @@ let correctGuesses = 0;
 let startTime: number;
 
 function startGame() {
-  // Hide start button
   startButton.style.display = "none";
 
   // Clear in case of previous game
-  restart?.classList.remove("show");
-  grid!.innerHTML = "";
+  restartScreen.classList.remove("show");
+  grid.innerHTML = "";
 
-  grid?.classList.add("show");
+  grid.classList.add("show");
 
   cards = shuffleArray(cardsArray);
   cards.forEach((card) => {
-    grid?.appendChild(createCard(card));
+    grid.appendChild(createCard(card));
   });
 
   startTime = Date.now();
 }
 
 function endGame() {
-  grid?.classList.remove("show");
+  grid.classList.remove("show");
+
+  // Duration of the game round
   const time = String(Math.floor((Date.now() - startTime) / 1000));
 
   let bestTime: string;
@@ -67,7 +66,7 @@ function endGame() {
     ".best-time"
   )!.textContent = `Best Time: ${bestTime} seconds`;
 
-  restart?.classList.add("show");
+  restartScreen.classList.add("show");
 
   correctGuesses = 0;
 
@@ -77,7 +76,7 @@ function endGame() {
 function createCard(cardInfo: Card) {
   const card = document.createElement("div");
   card.classList.add("card");
-  card.setAttribute("data-value", cardInfo.value);
+  card.dataset.value = cardInfo.value;
 
   const cardFront = document.createElement("div");
   cardFront.classList.add("card-front");
@@ -96,6 +95,7 @@ function createCard(cardInfo: Card) {
 }
 
 function flipCard(this: HTMLDivElement) {
+  // "this" comes from the eventlisteners attached to the cards
   if (lockBoard) return;
 
   if (this === firstCard) return;
@@ -152,7 +152,3 @@ function resetBoard() {
   [hasFlippedCard, lockBoard] = [false, false];
   [firstCard, secondCard] = [null, null];
 }
-
-// startGame();
-
-document.querySelector("#restart")?.addEventListener("click", startGame);

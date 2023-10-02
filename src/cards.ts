@@ -1,4 +1,9 @@
-const cards = [
+export interface Card {
+  id: number;
+  value: string;
+}
+
+const cards: Card[] = [
   { id: 0, value: "#fde68a" },
   { id: 1, value: "#ef4444" },
   { id: 2, value: "#34d399" },
